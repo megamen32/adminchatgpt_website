@@ -1,1 +1,5 @@
-# adminchatgpt_website
+# GPT-Admin Website
+
+Landing page for **GPT-Админ** — помощника, который превращает ChatGPT в реального администратора серверов.
+
+Откройте `index.html` в браузере, чтобы посмотреть страницу.
