@@ -4,33 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GPT-Админ — умный помощник для серверов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pLX++q9E9np5xpoE2mR7BfrpsbR9f7DmqDveoxu48UUfGzfo0RKZ77N8BINU3CFAaj6MqFmoVoe2MtkNAaXo4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <section class="hero">
+  <section class="hero fade-section">
+    <img class="hero-img" src="https://images.unsplash.com/photo-1585079546026-13d4f27cd8d4?auto=format&fit=crop&w=800&q=80" alt="Серверная" />
     <h1>GPT-Админ — умный помощник для серверов</h1>
     <p class="subtitle">ChatGPT, который не только советует, но и сам выполняет команды на ваших серверах.</p>
-    <a href="#install" class="cta">Установить за 1 минуту</a>
+    <a href="#install" class="cta">🚀 Установить за 1 минуту</a>
     <pre><code>curl -s https://get.gpt-admin.sh | sh</code></pre>
   </section>
 
-  <section class="what">
+  <section class="what fade-section">
     <h2>Что это такое</h2>
     <p>GPT-Админ соединяет ChatGPT и ваши компьютеры. Теперь GPT умеет не только советовать, но и сам выполнять команды.</p>
   </section>
 
-  <section class="features">
+  <section class="features fade-section">
     <h2>Возможности</h2>
-    <ul>
-      <li>⚙️ <strong>Администрирование</strong> — перезапуск сервисов (nginx, docker, sshd), настройка автозапуска.</li>
-      <li>📂 <strong>Файлы и конфиги</strong> — читает, редактирует и сохраняет конфигурации без ошибок.</li>
-      <li>🛠 <strong>Установка и обновление софта</strong> — VPN, Docker, веб-серверы, базы данных.</li>
-      <li>📜 <strong>Работа с логами</strong> — открывает, анализирует и исправляет ошибки.</li>
-      <li>💾 <strong>Управление ресурсами</strong> — проверка CPU, RAM, дисков, сетевых интерфейсов.</li>
+    <ul class="feature-list">
+      <li><span class="emoji">⚙️</span><strong>Администрирование</strong> — перезапуск сервисов (nginx, docker, sshd), настройка автозапуска.</li>
+      <li><span class="emoji">📂</span><strong>Файлы и конфиги</strong> — читает, редактирует и сохраняет конфигурации без ошибок.</li>
+      <li><span class="emoji">🛠</span><strong>Установка и обновление софта</strong> — VPN, Docker, веб-серверы, базы данных.</li>
+      <li><span class="emoji">📜</span><strong>Работа с логами</strong> — открывает, анализирует и исправляет ошибки.</li>
+      <li><span class="emoji">💾</span><strong>Управление ресурсами</strong> — проверка CPU, RAM, дисков, сетевых интерфейсов.</li>
     </ul>
   </section>
 
-  <section class="examples">
+  <section class="examples fade-section">
     <h2>Примеры использования</h2>
     <ul>
       <li>🎮 «Хочу Minecraft-сервер» → GPT сам ставит Java, качает сервер, открывает порты и запускает игру.</li>
@@ -40,7 +45,7 @@
     </ul>
   </section>
 
-  <section class="audience">
+  <section class="audience fade-section">
     <h2>Для кого полезен</h2>
     <ol>
       <li>🧑‍💻 <strong>Владельцы VPS без опыта</strong> — VPN, сайт, Minecraft «под ключ».</li>
@@ -49,7 +54,7 @@
     </ol>
   </section>
 
-  <section class="os">
+  <section class="os fade-section">
     <h2>Поддерживаемые ОС</h2>
     <ul>
       <li>🐧 Linux (Ubuntu/Debian — идеально)</li>
@@ -57,7 +62,7 @@
     </ul>
   </section>
 
-  <section class="why">
+  <section class="why fade-section">
     <h2>Почему это лучше, чем просто ChatGPT</h2>
     <ul>
       <li>Обычный ChatGPT → пишет инструкции, ты сам копируешь в консоль.</li>
@@ -65,10 +70,24 @@
     </ul>
   </section>
 
-  <section class="cta-final" id="install">
+  <section class="cta-final fade-section" id="install">
     <h2>Попробуй прямо сейчас — установка занимает 1 минуту!</h2>
-    <a href="#" class="cta">Установить за 1 минуту</a>
+    <a href="#" class="cta">🚀 Установить за 1 минуту</a>
     <pre><code>curl -s https://get.gpt-admin.sh | sh</code></pre>
   </section>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {threshold: 0.2});
+
+    document.querySelectorAll('.fade-section').forEach(section => {
+      observer.observe(section);
+    });
+  </script>
 </body>
 </html>

@@ -1,8 +1,16 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #fff;
   background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+  background-size: 600% 600%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
 }
 
 section {
@@ -16,9 +24,23 @@ section {
   padding: 120px 20px 80px;
 }
 
+.hero-img {
+  max-width: 400px;
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  animation: float 6s ease-in-out infinite;
+  margin-bottom: 30px;
+}
+
 .hero .subtitle {
   font-size: 1.2rem;
   margin-bottom: 20px;
+}
+
+@keyframes float {
+  0%,100% {transform: translateY(0);}
+  50% {transform: translateY(-15px);}
 }
 
 .cta {
@@ -29,11 +51,12 @@ section {
   border-radius: 8px;
   text-decoration: none;
   font-weight: bold;
-  transition: background 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 .cta:hover {
   background: #e64a19;
+  transform: scale(1.05);
 }
 
 pre {
@@ -51,4 +74,32 @@ h2 {
 
 ul, ol {
   line-height: 1.6;
+}
+
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-list li {
+  margin: 15px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.emoji {
+  font-size: 1.8rem;
+  margin-right: 10px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.fade-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-section.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
