@@ -1,108 +1,490 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GPT-Админ — умный помощник для серверов</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GPT‑Админ — умный помощник для серверов</title>
+  <meta name="description" content="GPT‑Админ подключает ChatGPT к вашим серверам: выполняет команды, ставит софт, правит конфиги, анализирует логи и следит за сервисами. Установка за 1 минуту."/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pLX+q9E9np5xpoE2mR7BfrpsbR9f7DmqDveoxu48UUfGzfo0RKZ77N8BINU3CFAaj6MqFmoVoe2MtkNAaXo4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkfYVfV7Z0e6Vx1Y7R9K9GQ8d3GQxZ8H8o5i7sC3z7R9mY8QXbQxZb8wA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Minimal, self‑contained CSS for a clean, modern landing page -->
+  <style>
+    :root{
+      --bg:#0b0f14;         /* almost black */
+      --bg-soft:#0f141b;    /* section cards */
+      --card:#111821;       /* cards */
+      --muted:#9ab0c2;      /* secondary text */
+      --text:#e9f1f7;       /* main text */
+      --brand:#5ed3f3;      /* cyan */
+      --brand-2:#7cf59a;    /* green */
+      --accent:#c8f169;     /* lime */
+      --danger:#ff6b6b;     /* red */
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1220px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    a{color:var(--brand)}
+    img{max-width:100%;display:block}
+    .container{width:min(var(--max),100%);margin-inline:auto;padding:24px}
+
+    /* Top nav */
+    .topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,rgba(11,15,20,.96),rgba(11,15,20,.75) 70%,rgba(11,15,20,0));backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .topbar-inner{display:flex;align-items:center;gap:18px;padding:14px 24px}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+    .logo i{color:var(--brand);font-size:22px}
+    .logo b{font-weight:800;letter-spacing:.2px}
+    .nav{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
+    .nav a{padding:10px 12px;border-radius:12px;text-decoration:none;color:var(--text);opacity:.9}
+    .nav a:hover{background:#0f1722}
+    .cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#071018;border-radius:16px;padding:12px 18px;text-decoration:none;font-weight:700;box-shadow:var(--shadow)}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;border-radius:var(--radius);background:radial-gradient(1200px 600px at 70% -20%, rgba(94,211,243,.25), transparent 50%),
+                                     radial-gradient(800px 500px at -10% 10%, rgba(124,245,154,.18), transparent 55%),
+                                     linear-gradient(180deg,#0c1219,#0a0f15 60%)}
+    .hero-wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:38px}
+    .hero h1{font-size:44px;line-height:1.06;margin:8px 0 12px}
+    .hero p{font-size:18px;color:var(--muted);margin:0 0 18px}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
+    .badge{font-size:13px;padding:6px 10px;border-radius:999px;background:#0f1722;border:1px solid rgba(255,255,255,.08);color:#cfe7f6}
+    .install{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .code{background:#0b1118;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .hero-media{position:relative}
+    .hero-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+    .hero-card img{aspect-ratio:16/10;object-fit:cover;filter:saturate(1.05)}
+    .hero-card .cap{padding:14px;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);font-size:14px}
+
+    /* Section base */
+    section{margin-top:38px}
+    .section{background:var(--bg-soft);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
+    .section h2{margin:0 0 14px;font-size:28px}
+    .section p.lead{color:var(--muted);margin:0 0 10px}
+
+    /* Feature grid */
+    .grid{display:grid;gap:16px}
+    .cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media (max-width: 980px){.hero-wrap{grid-template-columns:1fr}.cols-3{grid-template-columns:1fr 1fr}.cols-4{grid-template-columns:1fr 1fr}.nav{display:none}}
+    @media (max-width: 640px){.cols-3,.cols-4{grid-template-columns:1fr}}
+
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+    .card img{aspect-ratio:16/9;object-fit:cover}
+    .card .body{padding:14px}
+    .card .kicker{color:#a8c5d9;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+    .card h3{margin:6px 0 8px;font-size:18px}
+    .muted{color:var(--muted)}
+
+    /* Steps */
+    .steps{counter-reset:step}
+    .step{display:flex;gap:14px;align-items:flex-start;padding:14px;border-radius:14px;background:#0c1219;border:1px solid rgba(255,255,255,.06)}
+    .step-num{min-width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#0b1118;display:grid;place-items:center;font-weight:800}
+
+    /* Testimonials */
+    .testi{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:980px){.testi{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.testi{grid-template-columns:1fr}}
+    .quote{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;padding:16px;display:flex;gap:12px}
+    .quote img{width:44px;height:44px;border-radius:50%;object-fit:cover}
+    .quote b{display:block}
+
+    /* Screenshots carousel */
+    .shots{display:flex;gap:14px;overflow:auto;scroll-snap-type:x mandatory;padding-bottom:6px}
+    .shots img{width:360px;max-width:80vw;border-radius:16px;border:1px solid rgba(255,255,255,.06);scroll-snap-align:center;box-shadow:var(--shadow)}
+
+    /* Pricing */
+    .pricing{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (max-width:980px){.pricing{grid-template-columns:1fr 1fr}}
+    @media (max-width:640px){.pricing{grid-template-columns:1fr}}
+    .plan{background:linear-gradient(180deg,#0e151d,#0a0f15);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+    .price{font-size:36px;font-weight:800;margin:8px 0}
+    .ul{display:grid;gap:8px;margin:12px 0 14px}
+    .ul li{display:flex;gap:8px;align-items:flex-start}
+
+    /* FAQ */
+    details{border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px 14px;background:#0c1219}
+    summary{cursor:pointer;font-weight:600}
+    details+details{margin-top:10px}
+
+    /* Footer */
+    footer{margin-top:38px;padding:26px;background:#0b1118;border-top:1px solid rgba(255,255,255,.06)}
+    .foot{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .small{font-size:13px;color:#a9bfd2}
+
+    /* Appear on scroll */
+    .fade{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .6s ease}
+    .fade.visible{opacity:1;transform:none}
+  </style>
 </head>
 <body>
-  <div class="scroll-container">
-    <section class="hero fade-section">
-      <img class="hero-img" src="https://zetalink.ru/wp-content/uploads/2024/01/servernaja-komnata.png" alt="Серверная" />
-      <h1>GPT-Админ — умный помощник для серверов</h1>
-      <p class="subtitle">ChatGPT, который не только советует, но и сам выполняет команды на ваших серверах.</p>
-      <a href="instructions.html" class="cta">🚀 Установить за 1 минуту</a>
-      <pre><code>curl -s https://gptadmin.bezrabotnyi.com/install.sh | sh</code></pre>
+  <header class="topbar">
+    <div class="topbar-inner container">
+      <a class="logo" href="#top" aria-label="Домой">
+        <i class="fa-solid fa-robot"></i>
+        <b>GPT‑Админ</b>
+      </a>
+      <nav class="nav" aria-label="Главная навигация">
+        <a href="#how">Как работает</a>
+        <a href="#usecases">Use‑cases</a>
+        <a href="#features">Функции</a>
+        <a href="#security">Безопасность</a>
+        <a href="#pricing">Цены</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <a class="cta" href="#install"><i class="fa-solid fa-rocket"></i> Установить за 1 минуту</a>
+    </div>
+  </header>
+
+  <main id="top" class="container">
+    <!-- HERO -->
+    <section class="hero fade">
+      <div class="hero-wrap">
+        <div>
+          <div class="badges">
+            <span class="badge"><i class="fa-solid fa-shield"></i> Локальное исполнение</span>
+            <span class="badge"><i class="fa-solid fa-terminal"></i> Linux & Windows</span>
+            <span class="badge"><i class="fa-solid fa-bolt"></i> Ошибко‑устойчивый</span>
+          </div>
+          <h1>Умный помощник для серверов, который <u>делает</u>, а не советует</h1>
+          <p>Подключите ChatGPT к своим машинам: GPT‑Админ ставит софт, правит конфиги, перезапускает сервисы, читает логи и возвращает отчёты. Никаких копипаст — всё автоматически.</p>
+          <div class="install">
+            <a class="cta" href="#install"><i class="fa-solid fa-plug"></i> Быстрый старт</a>
+            <code class="code" aria-label="Команда установки на Linux">curl -s https://gptadmin.bezrabotnyi.com/install.sh | sh</code>
+          </div>
+          <p class="muted" style="margin-top:8px">⚠️ Установка требует root/Administrator на целевой машине. Можно ограничить права PolicyKit/ACL.</p>
+        </div>
+        <div class="hero-media">
+          <figure class="hero-card">
+            <img loading="lazy" src="ChatGPT Image 4 сент. 2025 г., 17_30_36.png" alt="Серверная стойка и терминал"/>
+            <figcaption class="cap">Автоконфиг nginx + SSL, проверка логов, перезапуск через systemd — за один диалог.</figcaption>
+          </figure>
+        </div>
+      </div>
     </section>
 
-    <section class="what fade-section">
-      <h2>Что это такое</h2>
-      <p>GPT-Админ соединяет ChatGPT и ваши компьютеры. Теперь GPT умеет не только советовать, но и сам выполнять команды.</p>
+    <!-- TRUST / LOGOS PLACEHOLDER -->
+    <section class="section fade" aria-label="Доверяют">
+      <p class="lead">Уже используют для домашних серверов, pet‑проектов и продакшн‑окружений.</p>
+      <div class="grid cols-4" style="align-items:center">
+        <div class="card" style="padding:16px;align-items:center;justify-content:center;min-height:92px"><i class="fa-brands fa-ubuntu"></i>&nbsp;Ubuntu</div>
+        <div class="card" style="padding:16px;align-items:center;justify-content:center;min-height:92px"><i class="fa-brands fa-docker"></i>&nbsp;Docker</div>
+        <div class="card" style="padding:16px;align-items:center;justify-content:center;min-height:92px"><i class="fa-solid fa-network-wired"></i>&nbsp;WireGuard</div>
+        <div class="card" style="padding:16px;align-items:center;justify-content:center;min-height:92px"><i class="fa-solid fa-database"></i>&nbsp;PostgreSQL</div>
+      </div>
     </section>
 
-    <section class="features fade-section">
-      <h2>Возможности</h2>
-      <ul class="feature-list">
-        <li><span class="emoji">⚙️</span><strong>Администрирование</strong> — перезапуск сервисов (nginx, docker, sshd), настройка автозапуска.</li>
-        <li><span class="emoji">📂</span><strong>Файлы и конфиги</strong> — читает, редактирует и сохраняет конфигурации без ошибок.</li>
-        <li><span class="emoji">🛠</span><strong>Установка и обновление софта</strong> — VPN, Docker, веб-серверы, базы данных.</li>
-        <li><span class="emoji">📜</span><strong>Работа с логами</strong> — открывает, анализирует и исправляет ошибки.</li>
-        <li><span class="emoji">💾</span><strong>Управление ресурсами</strong> — проверка CPU, RAM, дисков, сетевых интерфейсов.</li>
-      </ul>
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section fade">
+      <h2>Как это работает</h2>
+      <p class="lead">Две части: <b>hub‑proxy</b> (на главной машине) и <b>rootd</b> (на целевых). Hub проксирует команды, rootd исполняет их локально и безопасно возвращает результат.</p>
+      <div class="grid cols-3">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <b>Установка</b>
+            <p class="muted">Ставите hub‑proxy на главный ПК/VPS и rootd на остальные машины (Linux/Windows). Токены и список разрешённых команд настраиваются сразу.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <b>Подключение к ChatGPT</b>
+            <p class="muted">В ChatGPT создаёте действие (Action), вставляете выданный URL и ключ. GPT получает доступ ровно к тем endpoint’ам, что вы разрешили.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <b>Работа</b>
+            <p class="muted">Вы пишете: «Поставь WireGuard», «Почини nginx». GPT‑Админ запускает команды, читает логи, исправляет ошибки и возвращает отчёт.</p>
+          </div>
+        </div>
+      </div>
+      <div class="shots" style="margin-top:14px">
+        <img loading="lazy" src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1600&auto=format&fit=crop" alt="Диаграмма сети и серверов"/>
+        <img loading="lazy" src="Снимок экрана 2025-09-04 в 17.22.55.png" alt="Терминал и логи"/>
+        <img loading="lazy" src="Снимок экрана 2025-09-04 в 17.25.20.png" alt="Панель мониторинга"/>
+      </div>
     </section>
 
-    <section class="examples fade-section">
-      <h2>Примеры использования</h2>
-      <ul>
-        <li>🎮 «Хочу Minecraft-сервер» → GPT сам ставит Java, качает сервер, открывает порты и запускает игру.</li>
-        <li>🔐 «Сделай VPN» → GPT поставит WireGuard или OpenVPN, создаст конфиги и выдаст ключи.</li>
-        <li>🌐 «Сайт не работает» → GPT проверит nginx-конфиги и логи, найдёт ошибку и исправит.</li>
-        <li>🧹 «Память закончилась» → GPT найдёт, что её ест, и подскажет, как оптимизировать.</li>
-      </ul>
+    <!-- USE CASES / EXAMPLES -->
+    <section id="usecases" class="section fade">
+      <h2>Use‑cases, которые закрывает GPT‑Админ</h2>
+      <div class="grid cols-3">
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1600&auto=format&fit=crop" alt="Установка Minecraft‑сервера"/>
+          <div class="body">
+            <span class="kicker">Игровые сервера</span>
+            <h3>Minecraft «под ключ»</h3>
+            <p class="muted">Устанавливает Java, качает дистрибутив, создаёт systemd‑сервис, открывает порты и настраивает резервные копии.
+            </p>
+          </div>
+        </article>
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1600&auto=format&fit=crop" alt="VPN настройка"/>
+          <div class="body">
+            <span class="kicker">Безопасность</span>
+            <h3>VPN за 5 минут</h3>
+            <p class="muted">WireGuard/OpenVPN, генерация ключей, клиенты для iOS/Android, QR‑коды и авто‑ротация ключей по расписанию.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop" alt="Работа с логами и nginx"/>
+          <div class="body">
+            <span class="kicker">Веб‑инфраструктура</span>
+            <h3>Чиним «падает сайт»</h3>
+            <p class="muted">Валидирует конфиги nginx, проверяет Certbot, логи ошибок, перезапускает сервисы, правит firewall и HSTS.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop" alt="Мониторинг ресурсов"/>
+          <div class="body">
+            <span class="kicker">Ресурсы</span>
+            <h3>Память/диски/сеть</h3>
+            <p class="muted">Находит утечки, чистит логи, анализирует iostat/iftop, даёт рекомендации по лимитам и троттлингу.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1600&auto=format&fit=crop" alt="Базы данных"/>
+          <div class="body">
+            <span class="kicker">Базы</span>
+            <h3>PostgreSQL / Redis</h3>
+            <p class="muted">Настройка конфигов, бэкапы, репликация, VACUUM‑план, диагностика долгих запросов и deadlock’ов.</p>
+          </div>
+        </article>
+        <article class="card">
+          <img loading="lazy" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1600&auto=format&fit=crop" alt="CI/CD и Docker"/>
+          <div class="body">
+            <span class="kicker">DevOps</span>
+            <h3>Docker/CI</h3>
+            <p class="muted">Собирает и пушит образы, настраивает docker‑compose, healthcheck’и, перезапуски и лог‑драйверы.</p>
+          </div>
+        </article>
+      </div>
     </section>
 
-    <section class="audience fade-section">
-      <h2>Для кого полезен</h2>
-      <ol>
-        <li>🧑‍💻 <strong>Владельцы VPS без опыта</strong> — VPN, сайт, Minecraft «под ключ».</li>
-        <li>🛠 <strong>Сисадмины</strong> — меньше рутины, быстрее апдейты и правки.</li>
-        <li>🚀 <strong>Стартапы и разработчики</strong> — быстрый деплой, без отдельного админа.</li>
-      </ol>
+    <!-- FEATURES -->
+    <section id="features" class="section fade">
+      <h2>Что умеет GPT‑Админ</h2>
+      <div class="grid cols-3">
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-gear"></i> Администрирование</h3>
+            <p class="muted">Перезапуск и статус systemd, включение автозапуска, управление firewall, конфигурирование sshd, fail2ban и уведомления.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-file-pen"></i> Файлы и конфиги</h3>
+            <p class="muted">Читает/редактирует конфиги с валидацией синтаксиса, делает резервные копии и дифф‑патчи.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-screwdriver-wrench"></i> Софт и обновления</h3>
+            <p class="muted">Ставит пакеты, добавляет репозитории, обновляет версии с миграциями данных.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-scroll"></i> Логи и отладка</h3>
+            <p class="muted">Парсит journalctl/nginx/postgres‑логи, находит аномалии, предлагает фиксы и применяет их.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-microchip"></i> Ресурсы</h3>
+            <p class="muted">Мониторит CPU/RAM/IO/NET, настраивает алерты, ротацию логов и service healthchecks.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-diagram-project"></i> Интеграции</h3>
+            <p class="muted">Docker, Nginx, WireGuard, PostgreSQL, Redis, Fail2Ban, ufw, iptables, Certbot и др.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="os fade-section">
-      <h2>Поддерживаемые ОС</h2>
-      <ul>
-        <li>🐧 Linux (Ubuntu/Debian — идеально)</li>
-        <li>🪟 Windows (альфа версия)</li>
-      </ul>
+    <!-- TESTIMONIALS -->
+    <section class="section fade">
+      <h2>Отзывы</h2>
+      <div class="testi">
+        <div class="quote">
+          <img loading="lazy" src="https://i.pravatar.cc/88?img=12" alt="Аватар пользователя"/>
+          <div>
+            <b>Алексей, стартап</b>
+            <p class="muted">«Надо было срочно поднять VPN для команды — GPT‑Админ сделал всё за 5 минут, включая QR‑коды. Экономит часы рутины.»</p>
+          </div>
+        </div>
+        <div class="quote">
+          <img loading="lazy" src="https://i.pravatar.cc/88?img=31" alt="Аватар пользователя"/>
+          <div>
+            <b>Мария, разработчик</b>
+            <p class="muted">«Починил неочевидный баг в nginx: сам нашёл битую конфигурацию и предложил аккуратный дифф. Я только нажала “Да”.»</p>
+          </div>
+        </div>
+        <div class="quote">
+          <img loading="lazy" src="https://i.pravatar.cc/88?img=7" alt="Аватар пользователя"/>
+          <div>
+            <b>Игорь, гейм‑серверы</b>
+            <p class="muted">«Автобэкапы и автоперезапуск Minecraft после краша — теперь не сыплются тикеты от игроков ночами.»</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="why fade-section">
-      <h2>Почему это лучше, чем просто ChatGPT</h2>
-      <ul>
-        <li>Обычный ChatGPT → пишет инструкции, ты сам копируешь в консоль.</li>
-        <li>GPT-Админ → делает всё сам, исправляет ошибки на ходу, возвращает результат.</li>
-      </ul>
+    <!-- SECURITY -->
+    <section id="security" class="section fade">
+      <h2>Безопасность и приватность</h2>
+      <div class="grid cols-3">
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-lock"></i> Минимально необходимые права</h3>
+            <p class="muted">Root/Administrator нужен только там, где вы этого хотите. Поддерживаются ограниченные списки команд, polkit/ACL и audit‑логи.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-key"></i> Токены и IP‑allowlist</h3>
+            <p class="muted">Каждый агент имеет уникальный токен. Можно ограничить доступ по IP/подсетям и времени.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-eye-slash"></i> Логи без секретов</h3>
+            <p class="muted">Секреты маскируются в журналах. Для команд с чувствительными данными поддерживается режим «только локально».</p>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="cta-final fade-section" id="install">
-      <h2>Попробуй прямо сейчас — установка занимает 1 минуту!</h2>
-      <a href="instructions.html" class="cta">🚀 Установить за 1 минуту</a>
-      <pre><code>curl -s https://gptadmin.bezrabotnyi.com/install.sh | sh</code></pre>
+    <!-- SCREENSHOTS -->
+    <section class="section fade">
+      <h2>Скриншоты</h2>
+      <div class="shots">
+        <img loading="lazy" src="Снимок экрана 2025-09-04 в 17.22.55.png" alt="Журнал событий systemd"/>
+        <img loading="lazy" src="Снимок экрана 2025-09-04 в 17.25.20.png" alt="Консоль и диагностика"/>
+        <img loading="lazy" src="Снимок экрана 2025-09-04 в 17.29.42.png" alt="Мониторинг ресурсов"/>
+      </div>
     </section>
-  </div>
 
-  <nav class="dock">
-    <a href="index.html">>🏠<<i class="fa-solid fa-house"></i></a>
-    <a href="instructions.html">📝<i class="fa-solid fa-book"></i></a>
-  </nav>
+    <!-- PRICING -->
+    <section id="pricing" class="section fade">
+      <h2>Тарифы</h2>
+      <div class="pricing">
+        <div class="plan">
+          <h3>Starter</h3>
+          <div class="price">₽0</div>
+          <ul class="ul">
+            <li><i class="fa-solid fa-check"></i> 1 хаб + 1 агент</li>
+            <li><i class="fa-solid fa-check"></i> Базовые команды и логи</li>
+            <li><i class="fa-solid fa-check"></i> Установка в 1 клик</li>
+          </ul>
+          <a class="cta" href="#install">Начать</a>
+        </div>
+        <div class="plan" style="outline:2px solid var(--accent)">
+          <h3>Pro</h3>
+          <div class="price">₽300 в месяц</div>
+          <ul class="ul">
+            <li><i class="fa-solid fa-check"></i> До 10 агентов</li>
+            <li><i class="fa-solid fa-check"></i> Расширенные интеграции</li>
+            <li><i class="fa-solid fa-check"></i> Алерты в Telegram</li>
+          </ul>
+          <a class="cta" href="#install">Подключить</a>
+        </div>
+        <div class="plan">
+          <h3>Enterprise</h3>
+          <div class="price">Запрос</div>
+          <ul class="ul">
+            <li><i class="fa-solid fa-check"></i> SSO/VPN, аудит, политика команд</li>
+            <li><i class="fa-solid fa-check"></i> Частный хостинг</li>
+            <li><i class="fa-solid fa-check"></i> SLA и поддержка</li>
+          </ul>
+          <a class="cta" href="#install">Связаться</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section id="install" class="section fade">
+      <h2>Установка</h2>
+      <div class="grid cols-3">
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-brands fa-ubuntu"></i> Linux (hub‑proxy)</h3>
+            <pre class="code">curl -s https://gptadmin.bezrabotnyi.com/install.sh | sh</pre>
+            <p class="muted">Скрипт поставит хаб, сгенерирует токен и покажет URL для ChatGPT Action.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-solid fa-diagram-next"></i> Linux (rootd‑агент)</h3>
+            <pre class="code">curl -s https://gptadmin.bezrabotnyi.com/install_rootd.sh | sh</pre>
+            <p class="muted">Запустит локальный агент, привяжет к вашему хабу. Можно задать список разрешённых команд.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:14px">
+          <div class="body">
+            <h3><i class="fa-brands fa-windows"></i> Windows (альфа)</h3>
+            <pre class="code">iwr -UseBasicParsing https://gptadmin.bezrabotnyi.com/install_win.ps1 | iex</pre>
+            <p class="muted">Служба Windows Service + токен. Поддержка PowerShell‑команд и перезагрузок.</p>
+          </div>
+        </div>
+      </div>
+      <p class="muted" style="margin-top:10px">После установки откройте ChatGPT → <i>Actions</i> → добавьте выданный API‑URL/ключ. Готово.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section fade">
+      <h2>Частые вопросы</h2>
+      <details>
+        <summary>Насколько безопасно давать GPT доступ к серверам?</summary>
+        <p class="muted">Доступ ограничен вашим хабом и списком разрешённых endpoint’ов. Все действия логируются, секреты маскируются, можно включить approve‑режим.</p>
+      </details>
+      <details>
+        <summary>Будет ли GPT что‑то делать без моего ведома?</summary>
+        <p class="muted">Нет. Команды запускаются только по вашему запросу в чате, а для критичных операций доступен ручной approve.</p>
+      </details>
+      <details>
+        <summary>Что если команда упадёт с ошибкой?</summary>
+        <p class="muted">Агент пришлёт логи и выполнит авто‑диагностику: предложит исправления и повторит запуск после подтверждения.</p>
+      </details>
+      <details>
+        <summary>Можно ли развернуть всё в изолированной сети?</summary>
+        <p class="muted">Да. Хаб и агенты работают в локальной сети/VPN. Внешний доступ не требуется, если используете локальный ChatGPT‑шлюз.</p>
+      </details>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section fade" style="text-align:center">
+      <h2>Готовы попробовать?</h2>
+      <p class="lead">Установка занимает минуту. Вернуться к рутине — всегда успеете.</p>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <a class="cta" href="#install"><i class="fa-solid fa-rocket"></i> Установить</a>
+        <a class="cta" style="background:linear-gradient(135deg,var(--accent),#fff);" href="#how"><i class="fa-solid fa-circle-question"></i> Как это работает</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container foot">
+      <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-robot"></i><b>GPT‑Админ</b></div>
+      <div class="small">© 2025. Все права защищены. Телеграм для связи: <a href="#">@gptadmin</a></div>
+    </div>
+  </footer>
 
   <script>
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, {threshold: 0.2});
-
-    document.querySelectorAll('.fade-section').forEach(section => {
-      observer.observe(section);
-    });
-
-    const container = document.querySelector('.scroll-container');
-    container.addEventListener('wheel', e => {
-      if (e.deltaY !== 0) {
-        e.preventDefault();
-        container.scrollLeft += e.deltaY;
-      }
-    }, {passive: false});
+    // Fade‑in on view
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible') })
+    },{threshold:0.15});
+    document.querySelectorAll('.fade').forEach(n=>io.observe(n));
   </script>
 </body>
 </html>
