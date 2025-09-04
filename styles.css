@@ -142,3 +142,39 @@ ul, ol {
 .dock a:hover {
   transform: scale(1.5);
 }
+
+/* Image placeholders and modal */
+.img-placeholder {
+  color: #ddd;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.img-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.img-modal.show {
+  display: flex;
+}
+
+.img-modal img {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.img-modal .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 32px;
+  color: #fff;
+  cursor: pointer;
+}
