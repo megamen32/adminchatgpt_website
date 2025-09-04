@@ -31,15 +31,15 @@
       <h2>2. Подключение к ChatGPT</h2>
       <ol>
         <li>Зайдите в ChatGPT.</li>
-        <li>Создайте <strong>новый плагин</strong>.</li>
-        <li>В настройках добавьте действие, укажите URL API, который выдал скрипт после установки hub_proxy.</li>
+        <li>Создайте <strong>новое действие</strong>.</li>
+        <li>Выберите импорт из URL и вставьте <a href="https://became.bezrabonyi.com/openapi.json" target="_blank" rel="noopener">https://became.bezrabonyi.com/openapi.json</a>.</li>
       </ol>
     </section>
 
     <section class="fade-section">
       <h2>3. OpenAPI описание</h2>
-      <p>GPT сам подтянет описание API из вашего hub_proxy. Оно доступно по адресу:</p>
-      <pre><code>https://gptadmin.bezrabotnyi.com/openapi.json</code></pre>
+      <p>GPT сам подтянет описание API из вашего hub_proxy. Для теста можно использовать публичный пример:</p>
+      <pre><code>https://became.bezrabonyi.com/openapi.json</code></pre>
       <p>Пример (сокращённый):</p>
       <pre><code>{
   "openapi": "3.1.0",
@@ -104,6 +104,26 @@
         container.scrollLeft += e.deltaY;
       }
     }, {passive: false});
+
+    // Image placeholders and zoom
+    const modal=document.createElement('div');
+    modal.className='img-modal';
+    modal.innerHTML='<span class="close">&times;</span><img src="" alt="">';
+    document.body.appendChild(modal);
+    const modalImg=modal.querySelector('img');
+    modal.querySelector('.close').addEventListener('click',()=>modal.classList.remove('show'));
+
+    document.querySelectorAll('img').forEach(img=>{
+      const ph=document.createElement('div');
+      ph.className='img-placeholder';
+      ph.textContent='Здесь будет подпись';
+      img.insertAdjacentElement('afterend',ph);
+      img.style.cursor='zoom-in';
+      img.addEventListener('click',()=>{
+        modalImg.src=img.src;
+        modal.classList.add('show');
+      });
+    });
   </script>
 </body>
 </html>

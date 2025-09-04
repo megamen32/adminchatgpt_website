@@ -122,6 +122,13 @@
     /* Appear on scroll */
     .fade{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .6s ease}
     .fade.visible{opacity:1;transform:none}
+
+    /* Image placeholders and modal */
+    .img-placeholder{color:var(--muted);font-size:14px;text-align:center;margin-top:4px}
+    .img-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:1000}
+    .img-modal.show{display:flex}
+    .img-modal img{max-width:90vw;max-height:90vh}
+    .img-modal .close{position:absolute;top:20px;right:20px;font-size:32px;color:#fff;cursor:pointer}
   </style>
 </head>
 <body>
@@ -197,7 +204,7 @@
           <div class="step-num">2</div>
           <div>
             <b>Подключение к ChatGPT</b>
-            <p class="muted">В ChatGPT создаёте действие (Action), вставляете выданный URL и ключ. GPT получает доступ ровно к тем endpoint’ам, что вы разрешили.</p>
+            <p class="muted">В ChatGPT: 1) создайте новое действие; 2) выберите импорт по URL и вставьте <a href="https://became.bezrabonyi.com/openapi.json" target="_blank" rel="noopener">https://became.bezrabonyi.com/openapi.json</a>. GPT получит доступ ровно к тем endpoint’ам, что вы разрешили.</p>
           </div>
         </div>
         <div class="step">
@@ -478,7 +485,7 @@
   <footer>
     <div class="container foot">
       <div style="display:flex;align-items:center;gap:10px"><i class="fa-solid fa-robot"></i><b>GPT‑Админ</b></div>
-      <div class="small">© 2025. Все права защищены. Телеграм для связи: <a href="#">@careviolan</a></div>
+      <div class="small">© 2025. Все права защищены. Телеграм для связи: <a href="#">@careviolan</a>. <a href="https://became.bezrabonyi.com/openapi.json" target="_blank" rel="noopener">OpenAPI</a></div>
     </div>
   </footer>
 
@@ -488,6 +495,26 @@
       entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible') })
     },{threshold:0.15});
     document.querySelectorAll('.fade').forEach(n=>io.observe(n));
+
+    // Image placeholders and zoom
+    const modal=document.createElement('div');
+    modal.className='img-modal';
+    modal.innerHTML='<span class="close">&times;</span><img src="" alt="">';
+    document.body.appendChild(modal);
+    const modalImg=modal.querySelector('img');
+    modal.querySelector('.close').addEventListener('click',()=>modal.classList.remove('show'));
+
+    document.querySelectorAll('img').forEach(img=>{
+      const ph=document.createElement('div');
+      ph.className='img-placeholder';
+      ph.textContent='Здесь будет подпись';
+      img.insertAdjacentElement('afterend',ph);
+      img.style.cursor='zoom-in';
+      img.addEventListener('click',()=>{
+        modalImg.src=img.src;
+        modal.classList.add('show');
+      });
+    });
   </script>
 </body>
 </html>
