@@ -54,7 +54,10 @@
     .badges{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 18px}
     .badge{font-size:13px;padding:6px 10px;border-radius:999px;background:#0f1722;border:1px solid rgba(255,255,255,.08);color:#cfe7f6}
     .install{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-    .code{background:#0b1118;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+    .code{  white-space: pre-wrap;   /* разрешаем переносы */
+  word-break: break-all;   /* или break-word */
+  overflow-wrap: anywhere;
+  background:#0b1118;border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 14px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
     .hero-media{position:relative}
     .hero-card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
     .hero-card img{aspect-ratio:16/10;object-fit:cover;filter:saturate(1.05)}
@@ -316,21 +319,21 @@
       <h2>Отзывы</h2>
       <div class="testi">
         <div class="quote">
-          <img loading="lazy" src="https://i.pravatar.cc/88?img=12" alt="Аватар пользователя"/>
+          <img loading="lazy" src="person1.png" alt="Аватар пользователя"/>
           <div>
             <b>Алексей, стартап</b>
             <p class="muted">«Надо было срочно поднять VPN для команды — GPT‑Админ сделал всё за 5 минут, включая QR‑коды. Экономит часы рутины.»</p>
           </div>
         </div>
         <div class="quote">
-          <img loading="lazy" src="https://i.pravatar.cc/88?img=31" alt="Аватар пользователя"/>
+          <img loading="lazy" src="person2.png" alt="Аватар пользователя"/>
           <div>
             <b>Мария, разработчик</b>
             <p class="muted">«Починил неочевидный баг в nginx: сам нашёл битую конфигурацию и предложил аккуратный дифф. Я только нажала “Да”.»</p>
           </div>
         </div>
         <div class="quote">
-          <img loading="lazy" src="https://i.pravatar.cc/88?img=7" alt="Аватар пользователя"/>
+          <img loading="lazy" src="person3.png" alt="Аватар пользователя"/>
           <div>
             <b>Игорь, гейм‑серверы</b>
             <p class="muted">«Автобэкапы и автоперезапуск Minecraft после краша — теперь не сыплются тикеты от игроков ночами.»</p>
